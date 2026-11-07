@@ -24,3 +24,10 @@ The trade-off: this is slower than native `BigInt` and far slower than `Number`.
 ## Awkward edge: division requires a precision argument
 
 `1 / 3` has no finite decimal expansion. Rather than pick an arbitrary default and hide the truncation, `div(other, maxFractionalDigits)` makes you state how many fractional digits you want. Rounding is `ROUND_HALF_UP` (0.125 to two places is 0.13). If you omit the argument it defaults to 20 fractional digits; if you need more, pass it explicitly.
+
+## Performance
+
+The window keeps a bounded buffer, so `push` is constant time and memory does not
+grow with the length of the stream. `peak` and `trough` are linear in the window
+size, which is the trade that keeps `push` cheap.
+
